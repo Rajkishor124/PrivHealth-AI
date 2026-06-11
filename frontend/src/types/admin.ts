@@ -27,6 +27,8 @@ export interface Analytics {
   avgBloodSugar?: number | null;
   riskDistribution: Record<RiskCategory, number>;
   predictionsLast30Days: { date: string; count: number }[];
+  highRiskPatients?: number;
+  mostCommonRiskFactors?: Record<string, number>;
 }
 
 export interface AuditLog {

@@ -30,6 +30,7 @@ export default function Analytics() {
     { icon: Activity, label: 'Tracking Symptoms', value: analytics.patientsTrackingSymptoms ?? 0, color: 'from-orange-500 to-red-600' },
     { icon: Activity, label: 'Tracking Vitals', value: analytics.patientsTrackingVitals ?? 0, color: 'from-rose-500 to-pink-600' },
     { icon: AlertCircle, label: 'Critical Alerts', value: analytics.activeCriticalAlerts ?? 0, color: 'from-red-500 to-red-700' },
+    { icon: AlertCircle, label: 'High Risk Patients', value: analytics.highRiskPatients ?? 0, color: 'from-orange-500 to-red-500' },
   ];
 
   const maxDailyCount = Math.max(...analytics.predictionsLast30Days.map(d => d.count), 1);
@@ -97,6 +98,24 @@ export default function Analytics() {
           <div className="flex justify-between mt-2">
             <span className="text-[10px] text-slate-400">30 days ago</span>
             <span className="text-[10px] text-slate-400">Today</span>
+          </div>
+        </div>
+
+        {/* Most Common Risk Factors */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm md:col-span-2">
+          <h3 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <Activity size={16} className="text-rose-500" /> Most Common Risk Factors
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(analytics.mostCommonRiskFactors || {}).map(([factor, count]) => (
+              <div key={factor} className="bg-slate-50 rounded-xl p-4 flex items-center justify-between border border-slate-100">
+                <span className="text-sm font-medium text-slate-700 capitalize">{factor.replace(/_/g, ' ')}</span>
+                <span className="text-sm font-bold text-slate-900 bg-white px-3 py-1 rounded-full shadow-sm">{count} cases</span>
+              </div>
+            ))}
+            {(!analytics.mostCommonRiskFactors || Object.keys(analytics.mostCommonRiskFactors).length === 0) && (
+              <p className="text-sm text-slate-500">No risk factors recorded yet.</p>
+            )}
           </div>
         </div>
       </div>

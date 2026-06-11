@@ -22,6 +22,8 @@ import PatientDetail from '@/features/patients/pages/PatientDetail';
 import PredictionForm from '@/features/predictions/pages/PredictionForm';
 import PredictionHistory from '@/features/predictions/pages/PredictionHistory';
 import PredictionDetail from '@/features/predictions/pages/PredictionDetail';
+import DoctorAiDashboard from '@/features/predictions/pages/DoctorAiDashboard';
+import PatientAiDashboard from '@/features/predictions/pages/PatientAiDashboard';
 
 // EMR pages
 import ConsultationList from '@/features/emr/pages/ConsultationList';
@@ -101,6 +103,7 @@ export default function AppRoutes() {
         <Route path="/patients/:id/medical-history" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN', 'PATIENT']}><PatientTimeline /></RoleProtectedRoute>} />
         <Route path="/predictions" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN']}><PredictionHistory /></RoleProtectedRoute>} />
         <Route path="/predictions/:id" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN', 'PATIENT']}><PredictionDetail /></RoleProtectedRoute>} />
+        <Route path="/doctor/ai-dashboard" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN']}><DoctorAiDashboard /></RoleProtectedRoute>} />
 
         {/* EMR Routes */}
         <Route path="/consultations" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN', 'PATIENT']}><ConsultationList /></RoleProtectedRoute>} />
@@ -115,6 +118,7 @@ export default function AppRoutes() {
         <Route path="/me/predictions" element={<RoleProtectedRoute roles={['PATIENT']}><MyPredictions /></RoleProtectedRoute>} />
         <Route path="/me/reports" element={<RoleProtectedRoute roles={['PATIENT']}><RiskReports /></RoleProtectedRoute>} />
         <Route path="/me/medical-history" element={<RoleProtectedRoute roles={['PATIENT']}><PatientTimeline /></RoleProtectedRoute>} />
+        <Route path="/me/ai-dashboard" element={<RoleProtectedRoute roles={['PATIENT']}><PatientAiDashboard /></RoleProtectedRoute>} />
         
         {/* Tracking routes */}
         <Route path="/me/tracking" element={<RoleProtectedRoute roles={['PATIENT']}><PatientTrackingDashboard /></RoleProtectedRoute>} />

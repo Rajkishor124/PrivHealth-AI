@@ -43,7 +43,7 @@ export default function DashboardLayout() {
     { text: 'Appointments', icon: <EventNote size={18} />, path: '/appointments' },
     { text: 'Doctor Availability', icon: <ViewTimeline size={18} />, path: '/admin/availability' },
     { text: 'Patients', icon: <People size={18} />, path: '/patients' },
-    { text: 'Predictions', icon: <Timeline size={18} />, path: '/predictions' },
+    { text: 'AI Dashboard', icon: <Timeline size={18} />, path: '/doctor/ai-dashboard' },
     { text: 'Consultations', icon: <Healing size={18} />, path: '/consultations' },
     { text: 'Doctors', icon: <MedicalServices size={18} />, path: '/admin/staff/doctors' },
     { text: 'Receptionists', icon: <People size={18} />, path: '/admin/staff/receptionists' },
@@ -55,7 +55,7 @@ export default function DashboardLayout() {
     { text: 'My Schedule', icon: <EventNote size={18} />, path: '/doctor/schedule' },
     { text: 'Live Queue', icon: <Queue size={18} />, path: '/doctor/queue' },
     { text: 'Consultations', icon: <Healing size={18} />, path: '/consultations' },
-    { text: 'Predictions', icon: <Timeline size={18} />, path: '/predictions' },
+    { text: 'AI Dashboard', icon: <Timeline size={18} />, path: '/doctor/ai-dashboard' },
   ];
 
   const patientNav = [
@@ -64,7 +64,7 @@ export default function DashboardLayout() {
     { text: 'My Appointments', icon: <EventNote size={18} />, path: '/me/appointments' },
     { text: 'My Medical History', icon: <MedicalInformation size={18} />, path: '/me/medical-history' },
     { text: 'My Consultations', icon: <Healing size={18} />, path: '/consultations' },
-    { text: 'My Predictions', icon: <Timeline size={18} />, path: '/me/predictions' },
+    { text: 'AI Dashboard', icon: <Timeline size={18} />, path: '/me/ai-dashboard' },
     { text: 'Risk Reports', icon: <Article size={18} />, path: '/me/reports' },
   ];
 

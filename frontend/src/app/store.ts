@@ -5,6 +5,7 @@ import predictionReducer from '@/features/predictions/predictionSlice';
 import adminReducer from '@/features/admin/adminSlice';
 import emrReducer from '@/features/emr/emrSlice';
 import appointmentReducer from '@/features/appointments/appointmentSlice';
+import aiReducer from '@/features/predictions/aiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     admin: adminReducer,
     emr: emrReducer,
     appointments: appointmentReducer,
+    ai: aiReducer,
   },
 });
 

@@ -41,6 +41,10 @@ public class AnalyticsResponse {
     private Double avgSystolic;
     private Double avgDiastolic;
     private Double avgBloodSugar;
+    
+    // New ML Analytics Fields
+    private long highRiskPatients;
+    private Map<String, Long> mostCommonRiskFactors;
 
     @Data
     @Builder

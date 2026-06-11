@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -89,7 +90,7 @@ public class PatientTrackingController {
     @GetMapping("/hospital/alerts")
     @PreAuthorize("hasAnyRole('DOCTOR', 'HOSPITAL_ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<List<HealthAlertResponse>> getHospitalAlerts(
-            @CurrentUser UserPrincipal principal) {
+            @AuthenticationPrincipal UserPrincipal principal) {
         return ResponseEntity.ok(trackingService.getHospitalAlerts(principal));
     }
 

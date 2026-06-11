@@ -16,7 +16,8 @@ import com.privhealth.backend.emr.repository.DiagnosisRepository;
 import com.privhealth.backend.emr.repository.PrescriptionRepository;
 import com.privhealth.backend.patient.repository.PatientRepository;
 import com.privhealth.backend.prediction.entity.RiskCategory;
-import com.privhealth.backend.prediction.repository.PredictionRepository;
+import com.privhealth.backend.prediction.repository.RiskAssessmentRepository;
+import com.privhealth.backend.prediction.repository.RiskAssessmentExplanationRepository;
 import com.privhealth.backend.tracking.entity.AlertSeverity;
 import com.privhealth.backend.tracking.repository.HealthAlertRepository;
 import com.privhealth.backend.tracking.repository.HealthJournalRepository;
@@ -51,7 +52,8 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
-    private final PredictionRepository predictionRepository;
+    private final RiskAssessmentRepository riskAssessmentRepository;
+    private final RiskAssessmentExplanationRepository explanationRepository;
     private final AuditLogRepository auditLogRepository;
     private final AuditService auditService;
     private final ConsultationRepository consultationRepository;
@@ -208,7 +210,7 @@ public class AdminService {
             totalDoctors = userRepository.countByRole(Role.DOCTOR);
             pendingDoctors = userRepository.countByRoleAndStaffStatus(Role.DOCTOR, StaffStatus.PENDING);
             totalPatients = patientRepository.count();
-            totalPredictions = predictionRepository.count();
+            totalPredictions = riskAssessmentRepository.count();
             totalReceptionists = userRepository.countByRole(Role.RECEPTIONIST);
             totalTechnicians = userRepository.countByRole(Role.TECHNICIAN);
             totalActiveStaff = userRepository.countByStaffStatus(StaffStatus.ACTIVE);
@@ -220,7 +222,7 @@ public class AdminService {
             totalDoctors = userRepository.countByRoleAndHospitalId(Role.DOCTOR, principal.getHospitalId());
             pendingDoctors = userRepository.countByRoleAndStaffStatusAndHospitalId(Role.DOCTOR, StaffStatus.PENDING, principal.getHospitalId());
             totalPatients = patientRepository.countByHospitalId(principal.getHospitalId());
-            totalPredictions = predictionRepository.countByHospitalId(principal.getHospitalId());
+            totalPredictions = riskAssessmentRepository.countByHospitalId(principal.getHospitalId());
             totalReceptionists = userRepository.countByRoleAndHospitalId(Role.RECEPTIONIST, principal.getHospitalId());
             totalTechnicians = userRepository.countByRoleAndHospitalId(Role.TECHNICIAN, principal.getHospitalId());
             totalActiveStaff = userRepository.countByStaffStatusAndHospitalId(StaffStatus.ACTIVE, principal.getHospitalId());
@@ -254,8 +256,8 @@ public class AdminService {
         riskDistribution.put(RiskCategory.HIGH, 0L);
 
         List<Object[]> riskRows = principal.isSuperAdmin() ? 
-                predictionRepository.countByRiskCategory() :
-                predictionRepository.countByRiskCategoryAndHospitalId(principal.getHospitalId());
+                riskAssessmentRepository.countByRiskCategory() :
+                riskAssessmentRepository.countByRiskCategoryAndHospitalId(principal.getHospitalId());
 
         riskRows.forEach(row -> {
             RiskCategory cat = (RiskCategory) row[0];
@@ -273,8 +275,8 @@ public class AdminService {
         }
 
         List<Object[]> dateRows = principal.isSuperAdmin() ?
-                predictionRepository.countByDaySince(thirtyDaysAgo) :
-                predictionRepository.countByDaySinceAndHospitalId(thirtyDaysAgo, principal.getHospitalId());
+                riskAssessmentRepository.countByDaySince(thirtyDaysAgo.atZone(ZoneOffset.UTC)) :
+                riskAssessmentRepository.countByDaySinceAndHospitalId(thirtyDaysAgo.atZone(ZoneOffset.UTC), principal.getHospitalId());
 
         dateRows.forEach(row -> {
             LocalDate date = (LocalDate) row[0];
@@ -298,6 +300,14 @@ public class AdminService {
         java.time.Instant endOfDay = today.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         long todayWaiting = queueRepo.countByHospitalIdAndStatusAndDate(principal.getHospitalId(), QueueStatus.WAITING, startOfDay, endOfDay);
         long todayCompleted = appointmentRepo.countByHospitalIdAndAppointmentDateAndStatus(principal.getHospitalId(), today, AppointmentStatus.COMPLETED);
+
+        long highRiskPatients = principal.isSuperAdmin() ? riskAssessmentRepository.countHighRiskPatients() : riskAssessmentRepository.countHighRiskPatientsByHospitalId(principal.getHospitalId());
+        
+        List<Object[]> explanationRows = principal.isSuperAdmin() ? explanationRepository.findMostCommonRiskFactors() : explanationRepository.findMostCommonRiskFactorsByHospitalId(principal.getHospitalId());
+        Map<String, Long> mostCommonRiskFactors = new LinkedHashMap<>();
+        explanationRows.stream().limit(5).forEach(row -> {
+            mostCommonRiskFactors.put((String) row[0], (Long) row[1]);
+        });
 
         return AnalyticsResponse.builder()
                 .totalUsers(totalUsers)
@@ -325,6 +335,8 @@ public class AdminService {
                 .avgSystolic(avgSystolic)
                 .avgDiastolic(avgDiastolic)
                 .avgBloodSugar(avgBloodSugar)
+                .highRiskPatients(highRiskPatients)
+                .mostCommonRiskFactors(mostCommonRiskFactors)
                 .build();
     }
 
