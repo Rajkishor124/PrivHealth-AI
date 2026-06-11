@@ -30,6 +30,7 @@ public class ModelRegistry {
     private Double accuracy;
     private Double precisionScore;
     private Double recall;
+    @Column(name = "f1_score")
     private Double f1Score;
 
     @Column(nullable = false)
