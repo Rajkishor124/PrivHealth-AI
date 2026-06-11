@@ -30,6 +30,7 @@ public class RiskAssessmentService {
     private final RiskAssessmentRepository riskAssessmentRepository;
     private final RiskAlertRepository riskAlertRepository;
     private final AuditService auditService;
+    private final com.privhealth.backend.subscription.service.SubscriptionService subscriptionService;
 
     @Transactional
     public List<RiskAssessment> generateAssessments(Long patientId, HttpServletRequest request) {
@@ -37,6 +38,9 @@ public class RiskAssessmentService {
 
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        // Enforce SaaS Prediction Limit
+        subscriptionService.validateAndIncrementPredictionCount(patient.getHospitalId());
 
         PatientFeatureProfile profile = profileService.buildProfile(patientId);
 

@@ -62,6 +62,12 @@ import RecordVitals from '@/features/tracking/pages/RecordVitals';
 import RecordSymptom from '@/features/tracking/pages/RecordSymptom';
 import RecordJournal from '@/features/tracking/pages/RecordJournal';
 
+// SaaS pages
+import SubscriptionPlansPage from '@/features/saas/pages/SubscriptionPlansPage';
+import HospitalOnboarding from '@/features/saas/pages/HospitalOnboarding';
+import PlatformDashboard from '@/features/saas/pages/PlatformDashboard';
+import TenantDashboard from '@/features/saas/pages/TenantDashboard';
+
 function DashboardRedirect() {
   const { user } = useAppSelector((state) => state.auth);
   if (!user) return <Navigate to="/login" replace />;
@@ -129,9 +135,15 @@ export default function AppRoutes() {
 
         {/* Admin Routes */}
         <Route path="/admin/analytics" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><AnalyticsPage /></RoleProtectedRoute>} />
+        <Route path="/admin/subscription" element={<RoleProtectedRoute roles={['HOSPITAL_ADMIN', 'SUPER_ADMIN']}><TenantDashboard /></RoleProtectedRoute>} />
         <Route path="/admin/approvals" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><DoctorApprovals /></RoleProtectedRoute>} />
         <Route path="/admin/users" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><UserManagement /></RoleProtectedRoute>} />
         <Route path="/admin/reports" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><SystemReports /></RoleProtectedRoute>} />
+
+        {/* Super Admin / SaaS Routes */}
+        <Route path="/super-admin/dashboard" element={<RoleProtectedRoute roles={['SUPER_ADMIN']}><PlatformDashboard /></RoleProtectedRoute>} />
+        <Route path="/super-admin/plans" element={<RoleProtectedRoute roles={['SUPER_ADMIN']}><SubscriptionPlansPage /></RoleProtectedRoute>} />
+        <Route path="/super-admin/onboard" element={<RoleProtectedRoute roles={['SUPER_ADMIN']}><HospitalOnboarding /></RoleProtectedRoute>} />
         
         {/* Staff Management Routes */}
         <Route path="/admin/staff/doctors" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><StaffList type="doctors" title="Doctors" /></RoleProtectedRoute>} />

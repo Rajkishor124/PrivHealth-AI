@@ -31,9 +31,13 @@ public class StaffService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuditService auditService;
+    private final com.privhealth.backend.subscription.service.SubscriptionService subscriptionService;
 
     @Transactional
     public StaffResponse createDoctor(UserPrincipal principal, DoctorRequest request, HttpServletRequest httpRequest) {
+        // Enforce SaaS limit
+        subscriptionService.validateAndIncrementDoctorCount(principal.getHospitalId());
+
         validateEmailUnique(request.getEmail());
 
         String password = request.getPassword() != null && !request.getPassword().isBlank()

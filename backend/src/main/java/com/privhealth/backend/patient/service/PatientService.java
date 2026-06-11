@@ -40,12 +40,16 @@ public class PatientService {
     private final AuditService auditService;
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
+    private final com.privhealth.backend.subscription.service.SubscriptionService subscriptionService;
 
     @Transactional
     public PatientResponse create(UserPrincipal principal, PatientRequest request, HttpServletRequest httpRequest) {
         if (!principal.isSuperAdmin() && principal.getHospitalId() == null) {
             throw new AccessDeniedException("Must belong to a hospital");
         }
+
+        // Validate and increment patient count (SaaS limit)
+        subscriptionService.validateAndIncrementPatientCount(principal.getHospitalId());
 
         Long doctorId = request.getDoctorId();
         if (doctorId != null) {

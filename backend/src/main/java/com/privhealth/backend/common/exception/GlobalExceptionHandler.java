@@ -107,4 +107,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error("An unexpected error occurred", "INTERNAL_ERROR"));
     }
+
+    @ExceptionHandler(PlanLimitExceededException.class)
+    public ResponseEntity<ApiResponse<Void>> handlePlanLimitExceeded(PlanLimitExceededException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage(), "PLAN_LIMIT_EXCEEDED"));
+    }
+
+    @ExceptionHandler(SubscriptionExpiredException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSubscriptionExpired(SubscriptionExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error(ex.getMessage(), "SUBSCRIPTION_EXPIRED"));
+    }
 }

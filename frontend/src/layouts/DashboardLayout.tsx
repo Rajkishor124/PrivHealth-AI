@@ -9,7 +9,8 @@ import {
   Stethoscope as Healing, ClipboardList as MedicalInformation, BarChart3,
   CheckCircle2 as PendingActions, Settings, CalendarDays as EventNote,
   UserPlus as PersonAdd, Clock as Queue, CalendarCheck as EventAvailable,
-  ActivitySquare as Science, Stethoscope as MedicalServices, Activity as ViewTimeline, HeartPulse
+  ActivitySquare as Science, Stethoscope as MedicalServices, Activity as ViewTimeline, HeartPulse,
+  Building, Layers, CreditCard
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -36,8 +37,9 @@ export default function DashboardLayout() {
         : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
     }`;
 
-  const adminNav = [
+  const hospitalAdminNav = [
     { text: 'Analytics', icon: <Dashboard size={18} />, path: '/admin/analytics' },
+    { text: 'My Subscription', icon: <CreditCard size={18} />, path: '/admin/subscription' },
     { text: 'Appointment Analytics', icon: <EventAvailable size={18} />, path: '/admin/appointment-analytics' },
     { text: 'Approvals', icon: <PendingActions size={18} />, path: '/admin/approvals' },
     { text: 'Appointments', icon: <EventNote size={18} />, path: '/appointments' },
@@ -48,6 +50,13 @@ export default function DashboardLayout() {
     { text: 'Doctors', icon: <MedicalServices size={18} />, path: '/admin/staff/doctors' },
     { text: 'Receptionists', icon: <People size={18} />, path: '/admin/staff/receptionists' },
     { text: 'Technicians', icon: <Science size={18} />, path: '/admin/staff/technicians' },
+  ];
+
+  const superAdminNav = [
+    { text: 'Platform Overview', icon: <Dashboard size={18} />, path: '/super-admin/dashboard' },
+    { text: 'Subscription Plans', icon: <Layers size={18} />, path: '/super-admin/plans' },
+    { text: 'Onboard Hospital', icon: <Building size={18} />, path: '/super-admin/onboard' },
+    ...hospitalAdminNav,
   ];
 
   const doctorNav = [
@@ -77,8 +86,8 @@ export default function DashboardLayout() {
 
   const getNavItems = () => {
     switch (user?.role) {
-      case 'SUPER_ADMIN':
-      case 'HOSPITAL_ADMIN': return adminNav;
+      case 'SUPER_ADMIN': return superAdminNav;
+      case 'HOSPITAL_ADMIN': return hospitalAdminNav;
       case 'DOCTOR': return doctorNav;
       case 'PATIENT': return patientNav;
       case 'RECEPTIONIST': return receptionistNav;
