@@ -9,7 +9,7 @@ import {
   Stethoscope as Healing, ClipboardList as MedicalInformation, BarChart3,
   CheckCircle2 as PendingActions, Settings, CalendarDays as EventNote,
   UserPlus as PersonAdd, Clock as Queue, CalendarCheck as EventAvailable,
-  ActivitySquare as Science, Stethoscope as MedicalServices, Activity as ViewTimeline
+  ActivitySquare as Science, Stethoscope as MedicalServices, Activity as ViewTimeline, HeartPulse
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -60,6 +60,7 @@ export default function DashboardLayout() {
 
   const patientNav = [
     { text: 'My Profile', icon: <Dashboard size={18} />, path: '/me/profile' },
+    { text: 'Health Tracking', icon: <HeartPulse size={18} />, path: '/me/tracking' },
     { text: 'My Appointments', icon: <EventNote size={18} />, path: '/me/appointments' },
     { text: 'My Medical History', icon: <MedicalInformation size={18} />, path: '/me/medical-history' },
     { text: 'My Consultations', icon: <Healing size={18} />, path: '/consultations' },

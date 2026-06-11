@@ -10,7 +10,7 @@ export default function ConsultationForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { patients } = useAppSelector((state) => state.patients);
+  const { list: patients } = useAppSelector((state) => state.patients);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -76,7 +76,7 @@ export default function ConsultationForm() {
                 className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
               >
                 <option value="" disabled>Select a patient</option>
-                {patients?.content.map((p) => (
+                {patients?.map((p) => (
                   <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>
                 ))}
               </select>

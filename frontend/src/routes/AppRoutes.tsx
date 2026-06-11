@@ -54,6 +54,12 @@ import UserManagement from '@/features/admin/pages/UserManagement';
 import SystemReports from '@/features/admin/pages/SystemReports';
 import StaffList from '@/features/admin/pages/staff/StaffList';
 
+// Tracking pages
+import PatientTrackingDashboard from '@/features/tracking/components/PatientTrackingDashboard';
+import RecordVitals from '@/features/tracking/pages/RecordVitals';
+import RecordSymptom from '@/features/tracking/pages/RecordSymptom';
+import RecordJournal from '@/features/tracking/pages/RecordJournal';
+
 function DashboardRedirect() {
   const { user } = useAppSelector((state) => state.auth);
   if (!user) return <Navigate to="/login" replace />;
@@ -109,6 +115,13 @@ export default function AppRoutes() {
         <Route path="/me/predictions" element={<RoleProtectedRoute roles={['PATIENT']}><MyPredictions /></RoleProtectedRoute>} />
         <Route path="/me/reports" element={<RoleProtectedRoute roles={['PATIENT']}><RiskReports /></RoleProtectedRoute>} />
         <Route path="/me/medical-history" element={<RoleProtectedRoute roles={['PATIENT']}><PatientTimeline /></RoleProtectedRoute>} />
+        
+        {/* Tracking routes */}
+        <Route path="/me/tracking" element={<RoleProtectedRoute roles={['PATIENT']}><PatientTrackingDashboard /></RoleProtectedRoute>} />
+        <Route path="/me/tracking/vitals/new" element={<RoleProtectedRoute roles={['PATIENT']}><RecordVitals /></RoleProtectedRoute>} />
+        <Route path="/me/tracking/symptoms/new" element={<RoleProtectedRoute roles={['PATIENT']}><RecordSymptom /></RoleProtectedRoute>} />
+        <Route path="/me/tracking/journals/new" element={<RoleProtectedRoute roles={['PATIENT']}><RecordJournal /></RoleProtectedRoute>} />
+        <Route path="/patients/:id/tracking" element={<RoleProtectedRoute roles={['DOCTOR', 'HOSPITAL_ADMIN']}><PatientTrackingDashboard /></RoleProtectedRoute>} />
 
         {/* Admin Routes */}
         <Route path="/admin/analytics" element={<RoleProtectedRoute roles={['SUPER_ADMIN', 'HOSPITAL_ADMIN']}><AnalyticsPage /></RoleProtectedRoute>} />

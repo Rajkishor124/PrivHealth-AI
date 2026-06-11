@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Box, Typography, Paper, Table, TableBody, TableCell, 
-  TableContainer, TableHead, TableRow, Chip, TextField,
-  CircularProgress
-} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { fetchDoctorSchedule } from '../appointmentSlice';
 import { format } from 'date-fns';
+import { Calendar, Loader2 } from 'lucide-react';
+import Input from '@/components/common/Input';
 
 export default function DoctorSchedule() {
   const dispatch = useAppDispatch();
@@ -19,53 +15,68 @@ export default function DoctorSchedule() {
   }, [dispatch, filterDate]);
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>My Schedule</Typography>
-        <TextField
-          type="date"
-          size="small"
-          label="Date"
-          value={filterDate}
-          onChange={(e) => setFilterDate(e.target.value)}
-        />
-      </Box>
+    <div className="max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">My Schedule</h1>
+          <p className="text-sm text-slate-500 mt-1">View your appointments for a specific date</p>
+        </div>
+        <div className="w-48">
+          <Input
+            type="date"
+            label="Date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+          />
+        </div>
+      </div>
 
-      <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
-        {loading ? (
-          <Box sx={{ p: 4, textAlign: 'center' }}><CircularProgress /></Box>
-        ) : (
-          <Table>
-            <TableHead sx={{ bgcolor: 'background.default' }}>
-              <TableRow>
-                <TableCell>Time</TableCell>
-                <TableCell>Patient</TableCell>
-                <TableCell>Reason</TableCell>
-                <TableCell>Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {doctorSchedule.map((apt) => (
-                <TableRow key={apt.id}>
-                  <TableCell fontWeight="bold">{apt.appointmentTime.substring(0,5)}</TableCell>
-                  <TableCell>{apt.patientName}</TableCell>
-                  <TableCell>{apt.reasonForVisit}</TableCell>
-                  <TableCell>
-                    <Chip label={apt.status.replace('_', ' ')} size="small" />
-                  </TableCell>
-                </TableRow>
-              ))}
-              {doctorSchedule.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={4} align="center" sx={{ py: 3 }}>
-                    No appointments scheduled for this date.
-                  </TableCell>
-                </TableRow>
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="bg-slate-50 text-slate-500 uppercase text-xs font-semibold border-b border-slate-200">
+              <tr>
+                <th className="px-6 py-4">Time</th>
+                <th className="px-6 py-4">Patient</th>
+                <th className="px-6 py-4">Reason</th>
+                <th className="px-6 py-4">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {loading ? (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center">
+                    <Loader2 className="animate-spin text-teal-600 mx-auto" size={24} />
+                    <p className="text-slate-500 mt-2">Loading schedule...</p>
+                  </td>
+                </tr>
+              ) : doctorSchedule.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 mb-3">
+                      <Calendar className="text-slate-400" size={24} />
+                    </div>
+                    <p className="text-slate-500 font-medium">No appointments scheduled for this date</p>
+                  </td>
+                </tr>
+              ) : (
+                doctorSchedule.map((apt) => (
+                  <tr key={apt.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 font-bold text-slate-900">{apt.appointmentTime.substring(0,5)}</td>
+                    <td className="px-6 py-4 font-medium">{apt.patientName}</td>
+                    <td className="px-6 py-4">{apt.reasonForVisit || '-'}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                        {apt.status.replace('_', ' ')}
+                      </span>
+                    </td>
+                  </tr>
+                ))
               )}
-            </TableBody>
-          </Table>
-        )}
-      </TableContainer>
-    </Box>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
 }

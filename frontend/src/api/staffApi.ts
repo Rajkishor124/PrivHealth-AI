@@ -1,5 +1,5 @@
 import api from './axios';
-import type { ApiResponse, PageMeta } from '@/types/common';
+import type { ApiResponse, PageMeta } from '@/types/api';
 import type { User } from '@/types/auth';
 
 export const staffApi = {

@@ -32,6 +32,15 @@ public class AnalyticsResponse {
     private long todayCompleted;
     private Map<RiskCategory, Long> riskDistribution;
     private List<DailyPredictionCount> predictionsLast30Days;
+    
+    // Population Tracking Metrics
+    private long patientsTrackingSymptoms;
+    private long patientsTrackingVitals;
+    private long patientsJournaling;
+    private long activeCriticalAlerts;
+    private Double avgSystolic;
+    private Double avgDiastolic;
+    private Double avgBloodSugar;
 
     @Data
     @Builder

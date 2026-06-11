@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { fetchAnalytics } from '../adminSlice';
 import Loader from '@/components/common/Loader';
-import { Users, Stethoscope, Activity, Clock, TrendingUp, ShieldCheck } from 'lucide-react';
+import { Users, Stethoscope, Activity, Clock, TrendingUp, ShieldCheck, AlertCircle } from 'lucide-react';
 import { riskChartColor } from '@/utils/helpers';
 
 export default function Analytics() {
@@ -26,6 +26,10 @@ export default function Analytics() {
     { icon: Stethoscope, label: 'Consultations', value: analytics.totalConsultations, color: 'from-blue-500 to-cyan-600' },
     { icon: Activity, label: 'Diagnoses', value: analytics.totalDiagnoses, color: 'from-purple-500 to-indigo-600' },
     { icon: Activity, label: 'Prescriptions', value: analytics.totalPrescriptions, color: 'from-emerald-500 to-teal-600' },
+    { icon: Clock, label: 'Today Appointments', value: analytics.todayAppointments ?? 0, color: 'from-indigo-500 to-purple-600' },
+    { icon: Activity, label: 'Tracking Symptoms', value: analytics.patientsTrackingSymptoms ?? 0, color: 'from-orange-500 to-red-600' },
+    { icon: Activity, label: 'Tracking Vitals', value: analytics.patientsTrackingVitals ?? 0, color: 'from-rose-500 to-pink-600' },
+    { icon: AlertCircle, label: 'Critical Alerts', value: analytics.activeCriticalAlerts ?? 0, color: 'from-red-500 to-red-700' },
   ];
 
   const maxDailyCount = Math.max(...analytics.predictionsLast30Days.map(d => d.count), 1);

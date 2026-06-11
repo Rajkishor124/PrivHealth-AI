@@ -17,6 +17,11 @@ import com.privhealth.backend.emr.repository.PrescriptionRepository;
 import com.privhealth.backend.patient.repository.PatientRepository;
 import com.privhealth.backend.prediction.entity.RiskCategory;
 import com.privhealth.backend.prediction.repository.PredictionRepository;
+import com.privhealth.backend.tracking.entity.AlertSeverity;
+import com.privhealth.backend.tracking.repository.HealthAlertRepository;
+import com.privhealth.backend.tracking.repository.HealthJournalRepository;
+import com.privhealth.backend.tracking.repository.PatientSymptomRepository;
+import com.privhealth.backend.tracking.repository.PatientVitalsRepository;
 import com.privhealth.backend.security.UserPrincipal;
 import com.privhealth.backend.user.dto.UserResponse;
 import com.privhealth.backend.user.entity.StaffStatus;
@@ -54,6 +59,10 @@ public class AdminService {
     private final PrescriptionRepository prescriptionRepository;
     private final AppointmentRepository appointmentRepo;
     private final PatientQueueRepository queueRepo;
+    private final PatientSymptomRepository patientSymptomRepository;
+    private final PatientVitalsRepository patientVitalsRepository;
+    private final HealthJournalRepository healthJournalRepository;
+    private final HealthAlertRepository healthAlertRepository;
 
     // ── Doctor Approval ──
 
@@ -219,6 +228,24 @@ public class AdminService {
             totalDiagnoses = diagnosisRepository.countByHospitalId(principal.getHospitalId());
             totalPrescriptions = prescriptionRepository.countByHospitalId(principal.getHospitalId());
         }
+        
+        long patientsTrackingSymptoms = 0;
+        long patientsTrackingVitals = 0;
+        long patientsJournaling = 0;
+        long activeCriticalAlerts = 0;
+        Double avgSystolic = null;
+        Double avgDiastolic = null;
+        Double avgBloodSugar = null;
+
+        if (!principal.isSuperAdmin()) {
+            patientsTrackingSymptoms = patientSymptomRepository.countUniquePatientsByHospitalId(principal.getHospitalId());
+            patientsTrackingVitals = patientVitalsRepository.countUniquePatientsByHospitalId(principal.getHospitalId());
+            patientsJournaling = healthJournalRepository.countUniquePatientsByHospitalId(principal.getHospitalId());
+            activeCriticalAlerts = healthAlertRepository.countByHospitalIdAndSeverity(principal.getHospitalId(), AlertSeverity.CRITICAL);
+            avgSystolic = patientVitalsRepository.getAverageSystolicByHospitalId(principal.getHospitalId());
+            avgDiastolic = patientVitalsRepository.getAverageDiastolicByHospitalId(principal.getHospitalId());
+            avgBloodSugar = patientVitalsRepository.getAverageBloodSugarByHospitalId(principal.getHospitalId());
+        }
 
         // Risk distribution
         Map<RiskCategory, Long> riskDistribution = new LinkedHashMap<>();
@@ -291,6 +318,13 @@ public class AdminService {
                 .todayCompleted(todayCompleted)
                 .riskDistribution(riskDistribution)
                 .predictionsLast30Days(last30Days)
+                .patientsTrackingSymptoms(patientsTrackingSymptoms)
+                .patientsTrackingVitals(patientsTrackingVitals)
+                .patientsJournaling(patientsJournaling)
+                .activeCriticalAlerts(activeCriticalAlerts)
+                .avgSystolic(avgSystolic)
+                .avgDiastolic(avgDiastolic)
+                .avgBloodSugar(avgBloodSugar)
                 .build();
     }
 

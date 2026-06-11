@@ -13,6 +13,18 @@ export interface Analytics {
   totalConsultations: number;
   totalDiagnoses: number;
   totalPrescriptions: number;
+  totalAppointments?: number;
+  todayAppointments?: number;
+  todayCheckedIn?: number;
+  todayWaiting?: number;
+  todayCompleted?: number;
+  patientsTrackingSymptoms?: number;
+  patientsTrackingVitals?: number;
+  patientsJournaling?: number;
+  activeCriticalAlerts?: number;
+  avgSystolic?: number | null;
+  avgDiastolic?: number | null;
+  avgBloodSugar?: number | null;
   riskDistribution: Record<RiskCategory, number>;
   predictionsLast30Days: { date: string; count: number }[];
 }

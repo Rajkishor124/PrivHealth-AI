@@ -68,8 +68,8 @@ const appointmentSlice = createSlice({
       .addCase(fetchAppointments.pending, (state) => { state.loading = true; })
       .addCase(fetchAppointments.fulfilled, (state, action) => {
         state.loading = false;
-        state.appointments = action.payload.data;
-        state.totalPages = action.payload.meta?.totalPages ?? 0;
+        state.appointments = action.payload.data.content;
+        state.totalPages = action.payload.data.totalPages ?? action.payload.meta?.totalPages ?? 0;
       })
       .addCase(fetchAppointments.rejected, (state) => { state.loading = false; })
 
@@ -83,8 +83,8 @@ const appointmentSlice = createSlice({
       .addCase(fetchMyAppointments.pending, (state) => { state.loading = true; })
       .addCase(fetchMyAppointments.fulfilled, (state, action) => {
         state.loading = false;
-        state.myAppointments = action.payload.data;
-        state.totalPages = action.payload.meta?.totalPages ?? 0;
+        state.myAppointments = action.payload.data.content;
+        state.totalPages = action.payload.data.totalPages ?? action.payload.meta?.totalPages ?? 0;
       })
       .addCase(fetchMyAppointments.rejected, (state) => { state.loading = false; })
 

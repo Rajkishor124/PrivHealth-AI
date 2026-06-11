@@ -33,7 +33,7 @@ export default function PrescriptionForm() {
 
   const handleMedChange = (index: number, field: keyof PrescriptionMedicine, value: string) => {
     const newMeds = [...medicines];
-    newMeds[index] = { ...newMeds[index], [field]: value };
+    newMeds[index] = { ...newMeds[index], [field]: value } as PrescriptionMedicine;
     setMedicines(newMeds);
   };
 

@@ -76,7 +76,7 @@ export default function ConsultationList() {
                 <tr>
                   <td colSpan={6} className="px-6 py-8 text-center text-slate-400">Loading...</td>
                 </tr>
-              ) : !consultations?.content || consultations.content.length === 0 ? (
+              ) : !consultations || !consultations.content || consultations.content.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 mb-3">

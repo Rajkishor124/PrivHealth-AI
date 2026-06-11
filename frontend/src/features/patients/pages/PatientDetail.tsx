@@ -5,7 +5,7 @@ import { fetchPatient, deletePatient, clearSelected, assignDoctor } from '../pat
 import Loader from '@/components/common/Loader';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { ArrowLeft, Edit, Trash2, Activity, Lock, Shield, Phone, MapPin, Heart, UserPlus, Stethoscope, ClipboardList } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Activity, Lock, Shield, Phone, MapPin, Heart, UserPlus, Stethoscope, ClipboardList, HeartPulse } from 'lucide-react';
 import { formatDate } from '@/utils/helpers';
 import toast from 'react-hot-toast';
 
@@ -100,6 +100,11 @@ export default function PatientDetail() {
                   <Link to={`/consultations/new?patientId=${id}`}>
                     <Button variant="secondary" size="sm" className="!bg-white/10 !border-white/20 !text-white hover:!bg-white/20">
                       <Stethoscope size={14} /> New Consult
+                    </Button>
+                  </Link>
+                  <Link to={`/patients/${id}/tracking`}>
+                    <Button variant="secondary" size="sm" className="!bg-white/10 !border-white/20 !text-white hover:!bg-white/20">
+                      <HeartPulse size={14} /> Tracking
                     </Button>
                   </Link>
                 </>
