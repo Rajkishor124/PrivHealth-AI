@@ -28,6 +28,12 @@ PrivHealth AI is an enterprise-grade, multi-tenant Hospital Management System (H
 - **Educational Patient Dashboard**: Translates complex ML jargon into a simplified "Health Score" (100 - avg risk), advisory categories, and actionable next steps.
 - **Early Warning System**: Automated system alerts (Low, Medium, High, Critical) triggered by rising vitals or severe weight drops (>3kg in 14 days) to notify clinicians instantly.
 
+### 💳 5. SaaS Subscription, Billing & Onboarding
+- **Multi-Plan SaaS Model**: Dynamic support for custom subscription plans (Basic, Premium, Enterprise) detailing plan pricing, billing cycles, and tier constraints.
+- **Automated Tenant Onboarding**: Seamless registration of new hospitals, automatic provisioning of tenant isolation keys, creation of initial admin accounts, and instant subscription activation.
+- **Platform Owner (Super Admin) Dashboard**: Global SaaS operations console displaying total platform revenue, active hospital subscriptions, plan distributions, and global system configuration.
+- **Tenant Admin Dashboard**: Hospital-level billing page detailing the active subscription plan, real-time resource utilization tracking (doctors, patients, appointments), and warnings when resource limits are reached.
+
 ---
 
 ## 🏗️ Architecture Overview
@@ -51,7 +57,7 @@ graph TD
 
     subgraph Persistence Layer
         Service <--> DB[(PostgreSQL Database)]
-        DB --> |Flyway Migrations| Schema[Tables: tenants, emr, vitals, predictions, risk_alerts]
+        DB --> |Flyway Migrations| Schema[Tables: tenants, emr, vitals, predictions, risk_alerts, subscription_plans, hospital_subscriptions, usage_metrics]
     end
 ```
 
