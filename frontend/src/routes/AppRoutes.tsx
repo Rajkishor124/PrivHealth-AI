@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
 import ProtectedRoute from './ProtectedRoute';
 import RoleProtectedRoute from './RoleProtectedRoute';
+import RouteTransition from '@/components/common/RouteTransition';
 
 // Layouts
 import DashboardLayout from '@/layouts/DashboardLayout';
@@ -89,11 +90,11 @@ export default function AppRoutes() {
   return (
     <Routes>
       {/* Public */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/" element={<RouteTransition><Home /></RouteTransition>} />
+      <Route path="/login" element={<RouteTransition><Login /></RouteTransition>} />
+      <Route path="/register" element={<RouteTransition><Register /></RouteTransition>} />
+      <Route path="/forgot-password" element={<RouteTransition><ForgotPassword /></RouteTransition>} />
+      <Route path="/reset-password" element={<RouteTransition><ResetPassword /></RouteTransition>} />
 
       {/* Protected */}
       <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>

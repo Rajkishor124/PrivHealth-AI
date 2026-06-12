@@ -3,6 +3,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/app/hooks';
 import { logout } from '@/features/auth/authSlice';
 import ConfirmDialog from '@/components/common/ConfirmDialog';
+import RouteTransition from '@/components/common/RouteTransition';
 import {
   LayoutDashboard as Dashboard, Users as People, Activity as Timeline, FileText as Article,
   Shield, LogOut as Logout, Menu as MenuIcon, X, UserCircle, ChevronDown,
@@ -188,7 +189,9 @@ export default function DashboardLayout() {
 
         {/* Page content */}
         <main className="p-6">
-          <Outlet />
+          <RouteTransition>
+            <Outlet />
+          </RouteTransition>
         </main>
       </div>
 
